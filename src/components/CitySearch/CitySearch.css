@@ -1,0 +1,11 @@
+.forecast-item {
+    margin: 8px 8px;
+    padding: 4px;
+    background-color: #2d9268;
+    color: white;
+    max-width: 25%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
