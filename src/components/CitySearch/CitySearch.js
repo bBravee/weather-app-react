@@ -4,26 +4,38 @@ import axios from "axios";
 
 import "./CitySearch.css";
 
-function CitySearch() {
-    const [data, setData] = useState(null);
-    const [city, setCity] = useState("");
-    const [lon, setLon] = useState("");
-    const [lat, setLat] = useState("");
+import CurrentWeather from "../CurrentWeather/CurrentWeather";
+import Forecast from "../Forecast/Forecast";
 
+import { CSSTransition } from 'react-transition-group';
+
+function CitySearch() {
+    const [forecastData, setForecastData] = useState(null);
+    const [currentData, setCurrentData] = useState(null);
+    const [city, setCity] = useState("");
+    const [error, setError] = useState(false);
+    const apiKey = 'YOUR_API_KEY_HERE';
 
     const fetchData = async () => {
-        axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=apiKey`)
+        axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`)
             .then(cordResponse => {
+                setError(false);
+
                 const lon = cordResponse.data[0].lon;
                 const lat = cordResponse.data[0].lat;
 
-                return axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=apiKey&units=metric`);
+                return axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
             })
             .then(forecastResponse => {
-                console.log(forecastResponse.data.list);
-                setData(forecastResponse.data.list);
+                setForecastData(forecastResponse.data.list);
+
+                return axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+            })
+            .then(currentWeatherResponse => {
+                setCurrentData(currentWeatherResponse.data);
             })
             .catch(error => {
+                setError(true);
                 console.log(error);
             });
     }
@@ -34,28 +46,47 @@ function CitySearch() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="form-control">
-            <label for="cityInput">City Name: </label>
-            <input value={city} type="text" onChange={(event) => setCity(event.target.value)} />
-            <button type="submit">Go</button>
+        <div className="citySearchContainer">
+            <div className="formControl">
+                <form onSubmit={handleSubmit}>
+                    <input className="cityInput" placeholder="city name" value={city} type="text" onChange={(event) => setCity(event.target.value)} />
+                    {
+                            <CSSTransition
+                                in={error}
+                                timeout={300}
+                                classNames="slide"
+                                unmountOnExit
+                            >
+                                <p className="errorPopup">Invalid city name!</p>
+                            </CSSTransition>
+                    }
+                </form>
+            </div>
+            {
+                (currentData && !error) && (
+                    <CurrentWeather
+                        cityName={currentData.name}
+                        country={currentData.sys.country}
+                        iconCode={currentData.weather[0].icon}
+                        temperature={currentData.main.temp}
+                        description={currentData.weather[0].description}
+                        feelsLike={currentData.main.feels_like}
+                        wind={currentData.wind.speed}
+                        humidity={currentData.main.humidity}
+                        pressure={currentData.main.pressure}
+                        cloudiness={currentData.clouds.all}
+                        visibility={currentData.visibility}
+                    />
+                )
+            }
             <div>
                 {
-                    data && (
-                        <div>
-                            {
-                                data.map((item) => (
-                                    <div className="forecast-item" key={item.dt}>
-                                        <p>Day: {item.dt_txt}</p>
-                                        <p>Temperature: {item.main.temp} ℃</p>
-                                        <img src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`} />
-                                    </div>
-                                ))
-                            }
-                        </div>
+                    (forecastData && !error) && (
+                        <Forecast forecastData={forecastData} />
                     )
                 }
             </div>
-        </form>
+        </div>
     );
 }
 
