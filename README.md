@@ -13,7 +13,7 @@ https://github.com/bBravee/weather-app-react.git
 
 ## Go inside the directory
 ```
-cd react-openweather-app
+cd weather-app-react
 ```
 
 ## Install dependencies
