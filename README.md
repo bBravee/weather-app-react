@@ -8,7 +8,7 @@ To get started with the app, clone the repository and install the necessary depe
 
 ## Clone the repository
 ```
-git clone https://github.com/your-username/react-openweather-app.git
+https://github.com/bBravee/weather-app-react.git
 ```
 
 ## Go inside the directory
