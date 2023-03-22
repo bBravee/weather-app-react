@@ -1,3 +1,41 @@
+#React Weather App
+
+This React app allows users to check the current weather and 5-day forecast of any city in the world using the OpenWeather API.
+
+##Getting Started
+
+To get started with the app, clone the repository and install the necessary dependencies:
+
+# Clone the repository
+git clone https://github.com/your-username/react-openweather-app.git
+
+# Go inside the directory
+cd react-openweather-app
+
+# Install dependencies
+npm install
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
