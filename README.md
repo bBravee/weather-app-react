@@ -1,5 +1,7 @@
 # React Weather App
 
+![Preview image](./preview.jpg)
+
 This React app allows users to check the current weather and 5-day forecast of any city in the world using the OpenWeather API.
 
 ## Getting started
