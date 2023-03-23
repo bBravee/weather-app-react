@@ -37,6 +37,8 @@ npm start
 ```
 This will start the app on http://localhost:3000/.
 
+Enter the name of the city and press enter key to get the weather conditions.
+
 ## API Endpoints
 
 The app uses 3 different API endpoints to retrieve the weather data:
